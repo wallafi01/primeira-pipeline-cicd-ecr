@@ -1,0 +1,54 @@
+name: CI-CD
+on: 
+  push:
+  workflow_dispatch:
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Obtendo o código
+      uses: actions/checkout@v4.1.5
+    - name: Autenticação no Docker Hub
+      uses: docker/login-action@v3.1.0
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build da Imagem Docker
+      uses: docker/build-push-action@v6
+      with:
+        context: ./src
+        file: ./src/Dockerfile
+        push: true
+        tags: | 
+          wallafi/aula-primeira-pipeline:v${{ github.run_number }} 
+          wallafi/aula-primeira-pipeline:latest 
+  CD-Homolog:
+    needs: [CI]
+    uses: wallafi01/primeira-pipeline-cicd/.github/workflows/deploy.yml@main
+    with:
+      manifests: |
+        k8s/deployment.yaml
+      images: |
+        wallafi/aula-primeira-pipeline:v${{ github.run_number }} 
+      environment: homologacao
+    secrets: inherit
+  
+  Teste-Ambiente:
+    needs: [CD-Homolog]  
+    runs-on: ubuntu-latest
+    environment: homologacao
+    steps:
+      - name: Fake teste
+        run: echo "Fake teste ambiente ${{ vars.APP_NAMESPACE }}"
+
+  CD-Producao:
+    needs: [Teste-Ambiente]
+    uses: wallafi01/primeira-pipeline-cicd/.github/workflows/deploy.yml@main
+    with:
+      manifests: |
+        k8s/deployment.yaml
+      images: |
+        wallafi/aula-primeira-pipeline:v${{ github.run_number }} 
+      environment: producao
+    secrets: inherit    
+

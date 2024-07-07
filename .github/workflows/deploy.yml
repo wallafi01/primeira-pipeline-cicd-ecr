@@ -6,10 +6,10 @@ on:
                 type: string
                 required: true
                 description: "Arquivos manifestos para deploy"
-            images:
-                type: string
-                required: true
-                description: "Imagens que serão alteradas"    
+            # images:
+            #     type: string
+            #     required: true
+            #     description: "Imagens que serão alteradas"    
             tag:
                 type: string
                 required: true

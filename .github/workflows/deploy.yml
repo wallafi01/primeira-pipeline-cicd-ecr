@@ -40,7 +40,7 @@ jobs:
            file: ./src/Dockerfile
            push: true
            tags: |
-             ${{ vars.ECR }}:v${{ github.run_number }}
+             ${{ vars.ECR }}:${{ github.run_number }}
              ${{ vars.ECR }}:latest  
 
        - name: Install kubectl
@@ -53,10 +53,10 @@ jobs:
          env:
            KUBECONFIG: ${{ runner.temp }}/kubeconfig
          run: |
-           aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }} --kubeconfig $KUBECONFIG
+           aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }} --kubeconfig $KUBECONFIG
            echo "KUBECONFIG=$KUBECONFIG" >> $GITHUB_ENV
      
        - name: Deploy to EKS
          run: |
-           sed -i "s|image: REPOSITORY_TAG|image: ${{ inputs.images }}:v${{ github.run_number }}|g" ${{ inputs.manifests }}
+           sed -i "s|image: REPOSITORY_TAG|image: ${{ inputs.images }}:${{ github.run_number }}|g" ${{ inputs.manifests }}
            kubectl apply -f ${{ inputs.manifests }} -n ${{vars.APP_NAMESPACE }}      

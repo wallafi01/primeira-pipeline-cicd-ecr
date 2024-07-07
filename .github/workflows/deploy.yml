@@ -6,10 +6,10 @@ on:
                 type: string
                 required: true
                 description: "Arquivos manifestos para deploy"
-            # images:
-            #     type: string
-            #     required: true
-            #     description: "Imagens que serão alteradas"    
+            images:
+                type: string
+                required: true
+                description: "Imagens que serão alteradas"    
             tag:
                 type: string
                 required: true
@@ -56,5 +56,5 @@ jobs:
          uses: Azure/k8s-deploy@v5
          with:
            manifests: ${{ inputs.manifests}}
-           images: ${{ vars.URL_ECR }}:v${{ github.run_number }}   
+           images: ${{ inputs.images}}  
            namespace: ${{ vars.APP_NAMESPACE }}

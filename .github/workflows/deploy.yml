@@ -49,7 +49,7 @@ jobs:
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl             
    
-       - name: Download kubeConfig Files
+       - name: Download kubeConfig File
          env:
            KUBECONFIG: ${{ runner.temp }}/kubeconfig
          run: |

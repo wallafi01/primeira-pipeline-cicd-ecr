@@ -23,8 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: homologacao
     steps:
-      - name: Fake teste
-        run: echo "Fake teste ambiente ${{ vars.APP_NAMESPACE }}"
+      - name: passagem para producao
+        run: echo "O ambiente de ${{ vars.APP_NAMESPACE }} foi implantado , para prosseguir basta fazer um PR"
+        
 
   CICD-Producao:
     needs: [Teste-Ambiente]

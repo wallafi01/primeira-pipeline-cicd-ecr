@@ -11,7 +11,7 @@ jobs:
 
   CD-Homolog:
     needs: [CI]
-    uses: wallafi01/primeira-pipeline-cicd-ecr/.github/workflows/deploy.yml.yml@main
+    uses: wallafi01/primeira-pipeline-cicd-ecr/.github/workflows/deploy.yml@main
     with:
       manifests: |
         k8s/deployment.yaml

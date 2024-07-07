@@ -3,7 +3,14 @@ on:
   push:
   workflow_dispatch:
 jobs:
-  CICD-Homolog:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Obtendo o código
+      uses: actions/checkout@v4.1.5
+
+  CD-Homolog:
+    needs: [CI]
     uses: wallafi01/primeira-pipeline-cicd-ecr/.github/workflows/cidcd.yml@main
     with:
       manifests: |
@@ -12,7 +19,7 @@ jobs:
     secrets: inherit
   
   Teste-Ambiente:
-    needs: [CICD-Homolog]  
+    needs: [CD-Homolog]  
     runs-on: ubuntu-latest
     environment: homologacao
     steps:

@@ -60,3 +60,4 @@ jobs:
          run: |
            sed -i "s|image: REPOSITORY_TAG|image: ${{ inputs.images }}:v${{ github.run_number }}|g" ${{ inputs.manifests }}
            kubectl apply -f ${{ inputs.manifests }} -n ${{vars.APP_NAMESPACE }}      
+           

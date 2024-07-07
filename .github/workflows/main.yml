@@ -15,7 +15,7 @@ jobs:
     with:       
       environment: homologacao
       manifests: k8s/deployment.yaml
-      images: 931783206580.dkr.ecr.us-east-1.amazonaws.com/wallafi/web-live-app-prod        
+      images: 931783206580.dkr.ecr.us-east-1.amazonaws.com/wallafi/web-live-app      
     secrets: inherit
   
   Teste-Ambiente:
